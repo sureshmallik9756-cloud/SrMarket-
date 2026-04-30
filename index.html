@@ -1,241 +1,532 @@
-import { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { ShoppingCart, Store } from "lucide-react";
-
-const sampleProducts = [ { id: 1, name: "Men Cotton Shirt", price: 599, vendor: "Mallik Store", img: "https://via.placeholder.com/200" }, { id: 2, name: "Printed T-Shirt", price: 399, vendor: "Fashion Hub", img: "https://via.placeholder.com/200" }, { id: 3, name: "Sports Shoes", price: 1299, vendor: "Shoe Mart", img: "https://via.placeholder.com/200" }, { id: 4, name: "Smart Watch", price: 1999, vendor: "Tech Zone", img: "https://via.placeholder.com/200" }, { id: 5, name: "Bluetooth Speaker", price: 899, vendor: "Sound Store", img: "https://via.placeholder.com/200" }, { id: 6, name: "Backpack", price: 699, vendor: "Travel Shop", img: "https://via.placeholder.com/200" }, { id: 7, name: "Women Kurti", price: 799, vendor: "Ethnic Wear", img: "https://via.placeholder.com/200" }, { id: 8, name: "Headimport { useState } from "react"; import { Card, CardContent } from "@/components/ui/card"; import { Button } from "@/components/ui/button"; import { ShoppingCart, Store } from "lucide-react";
-
-const sampleProducts = [ { id: 1, name: "Men Cotton Shirt", price: 599, vendor: "Mallik Store", img: "https://via.placeholder.com/200" }, { id: 2, name: "Printed T-Shirt", price: 399, vendor: "Fashion Hub", img: "https://via.placeholder.com/200" }, { id: 3, name: "Sports Shoes", price: 1299, vendor: "Shoe Mart", img: "https://via.placeholder.com/200" }, { id: 4, name: "Smart Watch", price: 1999, vendor: "Tech Zone", img: "https://via.placeholder.com/200" }, { id: 5, name: "Bluetooth Speaker", price: 899, vendor: "Sound Store", img: "https://via.placeholder.com/200" }, { id: 6, name: "Backpack", price: 699, vendor: "Travel Shop", img: "https://via.placeholder.com/200" }, { id: 7, name: "Women Kurti", price: 799, vendor: "Ethnic Wear", img: "https://via.placeholder.com/200" }, { id: 8, name: "Head<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="hi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>MallikMart - ऑनलाइन शॉपिंग</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+        }
 
-<!-- 🔴 CHANGE SITE NAME HERE -->
-<title>MallikMart – Online Shopping</title>
+        body {
+            background-color: #f4f5f7;
+        }
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        :root {
+            --mm-blue: #1a5cff;
+            --mm-dark-blue: #0a3bb8;
+            --mm-light-blue: #eef3ff;
+            --mm-gold: #ffb700;
+            --mm-gray: #6b6f76;
+            --mm-border: #e2e5e9;
+        }
 
-<style>
-body { background:#f1f3f6; font-family: Arial; }
-.navbar { background:#2874f0; }
-.navbar-brand, .nav-link { color:white !important; }
-.product-card { background:white; border-radius:5px; }
-.price { color:green; font-weight:bold; }
-footer { background:#172337; color:white; padding:20px; margin-top:40px; }
-</style>
+        .top-bar {
+            background-color: white;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-main {
+            max-width: 1400px;
+            margin: auto;
+            padding: 12px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo h1 {
+            color: var(--mm-blue);
+            font-size: 28px;
+            letter-spacing: -0.5px;
+            font-weight: 700;
+        }
+        /* 🟢 "मल्लिक की दुनिया" हटा दी गई – अब सिर्फ MallikMart */
+
+        .search-bar {
+            flex: 2;
+            min-width: 200px;
+            display: flex;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--mm-border);
+            border-radius: 30px 0 0 30px;
+            outline: none;
+            font-size: 14px;
+        }
+        .search-bar button {
+            background-color: var(--mm-blue);
+            border: none;
+            padding: 0 20px;
+            border-radius: 0 30px 30px 0;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+        .nav-icons div {
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #1f2a3e;
+        }
+        .cart-icon {
+            background-color: var(--mm-light-blue);
+            padding: 8px 16px;
+            border-radius: 40px;
+            color: var(--mm-blue) !important;
+        }
+
+        .category-bar {
+            background: white;
+            border-top: 1px solid var(--mm-border);
+            border-bottom: 1px solid var(--mm-border);
+            padding: 8px 20px;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+        .category-list {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            gap: 28px;
+        }
+        .category-list span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+            cursor: pointer;
+            padding: 6px 0;
+        }
+        .category-list span:hover {
+            color: var(--mm-blue);
+            border-bottom: 2px solid var(--mm-blue);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #0a3bb8, #1a5cff);
+            border-radius: 24px;
+            padding: 40px 30px;
+            color: white;
+            margin-bottom: 40px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        .hero h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+        }
+        .hero-btn {
+            background-color: var(--mm-gold);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #1f2a3e;
+        }
+
+        .section-title {
+            font-size: 24px;
+            margin: 30px 0 20px;
+            font-weight: 700;
+            color: #1f2a3e;
+            border-left: 5px solid var(--mm-blue);
+            padding-left: 15px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 22px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 18px;
+            padding: 16px 12px;
+            text-align: center;
+            transition: 0.2s ease;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            border: 1px solid var(--mm-border);
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 24px rgba(26,92,255,0.1);
+            border-color: var(--mm-light-blue);
+        }
+        .product-img {
+            background: #f8f9fc;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 16px;
+            margin-bottom: 12px;
+            font-size: 48px;
+        }
+        .product-title {
+            font-weight: 600;
+            margin: 10px 0 5px;
+        }
+        .price {
+            color: var(--mm-blue);
+            font-weight: 700;
+            font-size: 20px;
+            margin: 8px 0;
+        }
+        .old-price {
+            text-decoration: line-through;
+            color: #8e8e93;
+            font-size: 13px;
+            margin-left: 6px;
+        }
+        .add-btn {
+            background-color: var(--mm-light-blue);
+            border: none;
+            padding: 10px 0;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: 600;
+            color: var(--mm-blue);
+            margin-top: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .add-btn:hover {
+            background-color: var(--mm-blue);
+            color: white;
+        }
+
+        .cart-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: flex-end;
+        }
+        .cart-panel {
+            background: white;
+            width: 380px;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .cart-panel h3 {
+            font-size: 26px;
+            color: var(--mm-blue);
+            margin-bottom: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid var(--mm-border);
+        }
+        .cart-total {
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 20px;
+        }
+        .close-cart {
+            background: #1f2a3e;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 40px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        /* 🟢 एड्रेस फॉर्म के लिए स्टाइल */
+        .address-form {
+            margin-top: 20px;
+            border-top: 2px solid var(--mm-border);
+            padding-top: 15px;
+        }
+        .address-form input, .address-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid var(--mm-border);
+            border-radius: 12px;
+            font-size: 14px;
+        }
+        .address-form button {
+            background-color: var(--mm-blue);
+            color: white;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 40px;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .footer {
+            background: #0f1825;
+            color: #aaa;
+            text-align: center;
+            padding: 30px;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+        @media (max-width: 700px) {
+            .header-main { flex-direction: column; align-items: stretch; }
+            .search-bar { width: 100%; }
+            .nav-icons { justify-content: space-between; }
+        }
+    </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
-<nav class="navbar navbar-expand-lg">
-<div class="container-fluid">
-<!-- 🔴 CHANGE BRAND NAME -->
-<a class="navbar-brand" href="#">MallikMart</a>
-
-<input class="form-control w-50" type="search" placeholder="Search for products">
-
-<span class="text-white ms-3">Cart (<span id="cartCount">0</span>)</span>
-</div>
-</nav>
-
-<!-- PRODUCTS -->
-<div class="container mt-4">
-<div class="row">
-
-<!-- PRODUCT 1 -->
-<div class="col-md-3">
-<div class="p-3 product-card">
-<img src="shirt.jpg" class="img-fluid">
-<h6 class="mt-2">Men Cotton Shirt</h6>
-<p class="price">₹599</p>
-<button class="btn btn-sm btn-primary w-100"
-onclick="addToCart('Men Cotton Shirt',599)">
-Add to Cart
-</button>
-</div>
+<div class="top-bar">
+    <div class="header-main">
+        <div class="logo">
+            <h1>MallikMart</h1>
+            <!-- 🟢 टैगलाइन हटा दी गई -->
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="खोजें... स्मार्टफोन, फैशन, इलेक्ट्रॉनिक्स..." id="searchInput">
+            <button onclick="filterProducts()">🔍</button>
+        </div>
+        <div class="nav-icons">
+            <div>📦 ट्रैक ऑर्डर</div>
+            <div>❤️ विशलिस्ट</div>
+            <div class="cart-icon" id="cartIcon">🛒 कार्ट (<span id="cartCount">0</span>)</div>
+        </div>
+    </div>
+    <div class="category-bar">
+        <div class="category-list">
+            <span onclick="filterCategory('सभी')">सभी</span>
+            <span onclick="filterCategory('मोबाइल')">📱 मोबाइल</span>
+            <span onclick="filterCategory('लैपटॉप')">💻 लैपटॉप</span>
+            <span onclick="filterCategory('फैशन')">👕 फैशन</span>
+            <span onclick="filterCategory('गृहोपयोगी')">🏠 गृहोपयोगी</span>
+        </div>
+    </div>
 </div>
 
-<!-- PRODUCT 2 -->
-<div class="col-md-3">
-<div class="p-3 product-card">
-<img src="tshirt.jpg" class="img-fluid">
-<h6 class="mt-2">Printed T-Shirt</h6>
-<p class="price">₹399</p>
-<button class="btn btn-sm btn-primary w-100"
-onclick="addToCart('Printed T-Shirt',399)">
-Add to Cart
-</button>
-</div>
-</div>
+<div class="container">
+    <div class="hero">
+        <div>
+            <h2>MallikMart महाबिक्री 🔥</h2>
+            <p>70% तक की छूट + फ्री शिपिंग</p>
+            <button class="hero-btn" onclick="alert('कोड: MALLIK2025 लगाएं')">कोड प्राप्त करें</button>
+        </div>
+        <div style="font-size: 70px;">🛍️</div>
+    </div>
 
-</div>
-
-<!-- CART -->
-<hr>
-<h4>Cart</h4>
-<ul id="cartList" class="list-group"></ul>
-<h5 id="total">Total: ₹0</h5>
-
-<button class="btn btn-success mt-2" onclick="payUPI()">Pay via UPI</button>
-<button class="btn btn-dark mt-2" onclick="orderWhatsApp()">Order on WhatsApp</button>
+    <div class="section-title">🔥 ट्रेंडिंग प्रोडक्ट्स</div>
+    <div class="product-grid" id="productGrid"></div>
 </div>
 
-<footer class="text-center">
-© 2026 MallikMart | Inspired E-Commerce Design
-</footer>
+<!-- कार्ट साइडबार (एड्रेस फॉर्म के साथ) -->
+<div class="cart-overlay" id="cartOverlay">
+    <div class="cart-panel">
+        <h3>🛒 MallikMart कार्ट</h3>
+        <div id="cartItemsList"></div>
+        <div class="cart-total" id="cartTotalValue">कुल: ₹0</div>
+        
+        <!-- 🟢 यहाँ एड्रेस फॉर्म जोड़ा गया है -->
+        <div class="address-form">
+            <input type="text" id="fullName" placeholder="पूरा नाम (जैसे: राहुल शर्मा)">
+            <input type="tel" id="mobile" placeholder="मोबाइल नंबर (10 अंक)">
+            <textarea id="address" rows="2" placeholder="पता (घर नंबर, गली, मोहल्ला)"></textarea>
+            <input type="text" id="city" placeholder="शहर">
+            <input type="text" id="pincode" placeholder="पिनकोड">
+            <button id="finalCheckoutBtn">✅ ऑर्डर कन्फर्म करें (एड्रेस के साथ)</button>
+        </div>
+        
+        <button class="close-cart" onclick="toggleCart()">बंद करें</button>
+    </div>
+</div>
+
+<div class="footer">
+    © 2026 MallikMart | भारत का अपना ऑनलाइन बाज़ार 💙 | सुरक्षित शॉपिंग
+</div>
 
 <script>
-let cart=[];
-let total=0;
+    let products = [
+        { id: 1, name: "MallikPhone 13", category: "मोबाइल", price: 28999, oldPrice: 65999, emi: "₹1,824/महीना", image: "📱" },
+        { id: 2, name: "MallikBook Air M2", category: "लैपटॉप", price: 78999, oldPrice: 119990, image: "💻" },
+        { id: 3, name: "स्पोर्ट्स ट्रैकसूट", category: "फैशन", price: 1299, oldPrice: 3999, image: "👕" },
+        { id: 4, name: "किंग साइज़ बेडशीट", category: "गृहोपयोगी", price: 849, oldPrice: 2499, image: "🛏️" },
+        { id: 5, name: "ब्लूटूथ नेकबैंड", category: "मोबाइल", price: 1199, oldPrice: 2999, image: "🎧" },
+        { id: 6, name: "Mallikवाच 5", category: "मोबाइल", price: 4999, oldPrice: 12999, image: "⌚" },
+        { id: 7, name: "जीन्स डेनिम पैंट", category: "फैशन", price: 1499, oldPrice: 3999, image: "👖" },
+        { id: 8, name: "नॉन-स्टिक कुक सेट", category: "गृहोपयोगी", price: 1999, oldPrice: 4999, image: "🍳" },
+        { id: 9, name: "गेमिंग कीबोर्ड", category: "लैपटॉप", price: 2499, oldPrice: 5999, image: "⌨️" },
+        { id: 10, name: "MallikPad Pro", category: "लैपटॉप", price: 56999, oldPrice: 89999, image: "📟" }
+    ];
 
-function addToCart(name,price){
-cart.push({name,price});
-total+=price;
-document.getElementById("cartCount").innerText=cart.length;
-updateCart();
-}
+    let cart = [];
+    let currentCategory = "सभी";
+    let currentSearch = "";
 
-function updateCart(){
-let list=document.getElementById("cartList");
-list.innerHTML="";
-cart.forEach(i=>{
-let li=document.createElement("li");
-li.className="list-group-item";
-li.innerText=i.name+" - ₹"+i.price;
-list.appendChild(li);
-});
-document.getElementById("total").innerText="Total: ₹"+total;
-}
+    function renderProducts() {
+        let filtered = products.filter(p => {
+            let matchCat = currentCategory === "सभी" || p.category === currentCategory;
+            let matchSearch = p.name.toLowerCase().includes(currentSearch.toLowerCase()) || p.category.toLowerCase().includes(currentSearch.toLowerCase());
+            return matchCat && matchSearch;
+        });
+        let grid = document.getElementById("productGrid");
+        if(filtered.length === 0){
+            grid.innerHTML = `<div style="width:100%; text-align:center; padding:50px;">❌ कोई प्रोडक्ट नहीं मिला "MallikMart" में</div>`;
+            return;
+        }
+        grid.innerHTML = filtered.map(p => `
+            <div class="product-card">
+                <div class="product-img">${p.image}</div>
+                <div class="product-title">${p.name}</div>
+                <div class="price">₹${p.price.toLocaleString('en-IN')} ${p.oldPrice ? `<span class="old-price">₹${p.oldPrice.toLocaleString('en-IN')}</span>` : ''}</div>
+                <div style="font-size:12px;">⭐ 4.6 | ${p.emi || 'फ्री डिलीवरी'}</div>
+                <button class="add-btn" onclick="addToCart(${p.id})">कार्ट में डालें 🛒</button>
+            </div>
+        `).join('');
+    }
 
-function payUPI(){
-let upi="upi://pay?pa=YOURUPI@upi&pn=MallikMart&am="+total+"&cu=INR";
-window.location.href=upi;
-}
+    function addToCart(id) {
+        let product = products.find(p => p.id === id);
+        let existing = cart.find(i => i.id === id);
+        if(existing) existing.qty += 1;
+        else cart.push({...product, qty: 1});
+        updateCartUI();
+        alert(`${product.name} को MallikMart कार्ट में डाला गया ✅`);
+    }
 
-function orderWhatsApp(){
-let msg="Order:%0A";
-cart.forEach(i=>msg+=i.name+" ₹"+i.price+"%0A");
-msg+="Total ₹"+total;
-window.open("https://wa.me/91XXXXXXXXXX?text="+msg);
-}
+    function updateCartUI() {
+        let count = cart.reduce((sum, item) => sum + item.qty, 0);
+        document.getElementById("cartCount").innerText = count;
+        let cartListDiv = document.getElementById("cartItemsList");
+        if(cart.length === 0){
+            cartListDiv.innerHTML = "<p>कार्ट खाली है 🛍️ MallikMart पर शॉपिंग करें</p>";
+            document.getElementById("cartTotalValue").innerHTML = "कुल: ₹0";
+            return;
+        }
+        let total = 0;
+        cartListDiv.innerHTML = cart.map(item => {
+            total += item.price * item.qty;
+            return `<div class="cart-item">
+                        <div><b>${item.name}</b><br>₹${item.price} x ${item.qty}</div>
+                        <div><button onclick="changeQty(${item.id}, -1)">➖</button> ${item.qty} <button onclick="changeQty(${item.id}, 1)">➕</button> <button onclick="removeItem(${item.id})" style="background:none; border:none;">🗑️</button></div>
+                    </div>`;
+        }).join('');
+        document.getElementById("cartTotalValue").innerHTML = `कुल: ₹${total.toLocaleString('en-IN')}`;
+    }
+
+    function changeQty(id, delta) {
+        let item = cart.find(i => i.id === id);
+        if(item){
+            item.qty += delta;
+            if(item.qty <= 0) cart = cart.filter(i => i.id !== id);
+            updateCartUI();
+        }
+    }
+
+    function removeItem(id) {
+        cart = cart.filter(item => item.id !== id);
+        updateCartUI();
+    }
+
+    function toggleCart() {
+        let ov = document.getElementById("cartOverlay");
+        ov.style.display = ov.style.display === "flex" ? "none" : "flex";
+    }
+
+    function filterCategory(cat){
+        currentCategory = cat;
+        currentSearch = "";
+        document.getElementById("searchInput").value = "";
+        renderProducts();
+    }
+
+    function filterProducts(){
+        currentSearch = document.getElementById("searchInput").value;
+        renderProducts();
+    }
+
+    // 🟢 एड्रेस के साथ ऑर्डर कन्फर्म करने का फंक्शन
+    function confirmOrderWithAddress() {
+        if(cart.length === 0){
+            alert("आपका कार्ट खाली है! पहले कोई प्रोडक्ट डालें।");
+            return;
+        }
+        let name = document.getElementById("fullName").value.trim();
+        let mobile = document.getElementById("mobile").value.trim();
+        let address = document.getElementById("address").value.trim();
+        let city = document.getElementById("city").value.trim();
+        let pincode = document.getElementById("pincode").value.trim();
+        
+        if(!name || !mobile || !address || !city || !pincode){
+            alert("कृपया पूरा पता भरें (नाम, मोबाइल, पता, शहर, पिनकोड)");
+            return;
+        }
+        if(mobile.length !== 10 || isNaN(mobile)){
+            alert("मोबाइल नंबर 10 अंकों का होना चाहिए");
+            return;
+        }
+        if(pincode.length !== 6 || isNaN(pincode)){
+            alert("पिनकोड 6 अंकों का होना चाहिए");
+            return;
+        }
+        
+        let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        let itemsList = cart.map(item => `${item.name} (₹${item.price} x ${item.qty})`).join("\n");
+        
+        let orderMsg = `🎉 ऑर्डर कन्फर्म हो गया! 🎉\n\n📦 प्रोडक्ट्स:\n${itemsList}\n\n💰 कुल राशि: ₹${total.toLocaleString('en-IN')}\n\n👤 नाम: ${name}\n📞 मोबाइल: ${mobile}\n🏠 पता: ${address}, ${city} - ${pincode}\n\nधन्यवाद! आपका ऑर्डर जल्द डिलीवर किया जाएगा।`;
+        
+        alert(orderMsg);
+        
+        // कार्ट खाली करें और फॉर्म रीसेट करें
+        cart = [];
+        updateCartUI();
+        document.getElementById("fullName").value = "";
+        document.getElementById("mobile").value = "";
+        document.getElementById("address").value = "";
+        document.getElementById("city").value = "";
+        document.getElementById("pincode").value = "";
+        toggleCart(); // कार्ट बंद करें
+        renderProducts(); // प्रोडक्ट ग्रिड रिफ्रेश
+    }
+
+    document.getElementById("cartIcon").onclick = toggleCart;
+    window.onclick = function(e){
+        let ov = document.getElementById("cartOverlay");
+        if(e.target === ov) ov.style.display = "none";
+    }
+    
+    // चेकआउट बटन के लिए इवेंट
+    document.getElementById("finalCheckoutBtn").onclick = confirmOrderWithAddress;
+    
+    renderProducts();
 </script>
-
-</body>
-</html<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- 🔴 CHANGE SITE NAME HERE -->
-<title>MallikMart – Online Shopping</title>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<style>
-body { background:#f1f3f6; font-family: Arial; }
-.navbar { background:#2874f0; }
-.navbar-brand, .nav-link { color:white !important; }
-.product-card { background:white; border-radius:5px; }
-.price { color:green; font-weight:bold; }
-footer { background:#172337; color:white; padding:20px; margin-top:40px; }
-</style>
-</head>
-
-<body>
-
-<!-- HEADER -->
-<nav class="navbar navbar-expand-lg">
-<div class="container-fluid">
-<!-- 🔴 CHANGE BRAND NAME -->
-<a class="navbar-brand" href="#">MallikMart</a>
-
-<input class="form-control w-50" type="search" placeholder="Search for products">
-
-<span class="text-white ms-3">Cart (<span id="cartCount">0</span>)</span>
-</div>
-</nav>
-
-<!-- PRODUCTS -->
-<div class="container mt-4">
-<div class="row">
-
-<!-- PRODUCT 1 -->
-<div class="col-md-3">
-<div class="p-3 product-card">
-<img src="shirt.jpg" class="img-fluid">
-<h6 class="mt-2">Men Cotton Shirt</h6>
-<p class="price">₹599</p>
-<button class="btn btn-sm btn-primary w-100"
-onclick="addToCart('Men Cotton Shirt',599)">
-Add to Cart
-</button>
-</div>
-</div>
-
-<!-- PRODUCT 2 -->
-<div class="col-md-3">
-<div class="p-3 product-card">
-<img src="tshirt.jpg" class="img-fluid">
-<h6 class="mt-2">Printed T-Shirt</h6>
-<p class="price">₹399</p>
-<button class="btn btn-sm btn-primary w-100"
-onclick="addToCart('Printed T-Shirt',399)">
-Add to Cart
-</button>
-</div>
-</div>
-
-</div>
-
-<!-- CART -->
-<hr>
-<h4>Cart</h4>
-<ul id="cartList" class="list-group"></ul>
-<h5 id="total">Total: ₹0</h5>
-
-<button class="btn btn-success mt-2" onclick="payUPI()">Pay via UPI</button>
-<button class="btn btn-dark mt-2" onclick="orderWhatsApp()">Order on WhatsApp</button>
-</div>
-
-<footer class="text-center">
-© 2026 MallikMart | Inspired E-Commerce Design
-</footer>
-
-<script>
-let cart=[];
-let total=0;
-
-function addToCart(name,price){
-cart.push({name,price});
-total+=price;
-document.getElementById("cartCount").innerText=cart.length;
-updateCart();
-}
-
-function updateCart(){
-let list=document.getElementById("cartList");
-list.innerHTML="";
-cart.forEach(i=>{
-let li=document.createElement("li");
-li.className="list-group-item";
-li.innerText=i.name+" - ₹"+i.price;
-list.appendChild(li);
-});
-document.getElementById("total").innerText="Total: ₹"+total;
-}
-
-function payUPI(){
-let upi="upi://pay?pa=YOURUPI@upi&pn=MallikMart&am="+total+"&cu=INR";
-window.location.href=upi;
-}
-
-function orderWhatsApp(){
-let msg="Order:%0A";
-cart.forEach(i=>msg+=i.name+" ₹"+i.price+"%0A");
-msg+="Total ₹"+total;
-window.open("https://wa.me/91XXXXXXXXXX?text="+msg);
-}
-</script>
-
 </body>
 </html>
